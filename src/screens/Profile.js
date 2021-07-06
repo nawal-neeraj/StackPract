@@ -15,7 +15,7 @@ export default Profile =({navigation, route}) => {
                 </Button>
             </Left>
                 <Body>
-                    <Title>{route.params.title}</Title>
+                    {route.params.title ? <Title>{route.params.title}</Title> : <Title>Profile</Title>}
                 </Body>
                 <Right />
         </Header>
