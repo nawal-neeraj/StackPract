@@ -8,7 +8,7 @@ export default Home = ({navigation}) => {
 
     handlePage = () => {
         // console.log(navigation.na,"check")
-        navigation.navigate('Profile')
+        navigation.navigate('Profile',{title:"Profile Form"})
     }
 
     const MyStatusBar = ({backgroundColor, ...props}) => (

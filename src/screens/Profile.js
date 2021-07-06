@@ -4,7 +4,7 @@ import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Rig
 import StyleConfig from "../Config/StyleConfig";
 import Icon from "react-native-vector-icons/Ionicons";
 
-export default Profile =({navigation}) => {
+export default Profile =({navigation, route}) => {
   return (
     <Container>
         <StyleConfig />
@@ -15,7 +15,7 @@ export default Profile =({navigation}) => {
                 </Button>
             </Left>
                 <Body>
-                    <Title>Profile</Title>
+                    <Title>{route.params.title}</Title>
                 </Body>
                 <Right />
         </Header>
