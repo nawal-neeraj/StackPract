@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text, Root, List, ListItem } from 'native-base';
 import Icon from "react-native-vector-icons/Ionicons";
 import StyleConfig from "../Config/StyleConfig";
@@ -7,15 +7,34 @@ import { AppTheme } from "../themes/AppThemes";
 
 import Input from "../components/Input";
 
+const window = Dimensions.get('window')
+
 export default Game =({navigation}) => {
 
    const [takeNum, setTakeNum] = useState('')
+   const [userNumber, setUserNumber] = useState('')
+   const [confirm, setConfirm] =useState(false)
+   const [numRegex, setNumregex] = useState(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)
 
    const handleInput = (value) => {
-        setTakeNum(value.replace(/[^0-9]/g), '')
-        console.log(value)
+        setTakeNum(value.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,''))
    }
 
+   const HandleConfirm = () => {
+       setConfirm(true);
+       const userNumber = parseInt(takeNum);
+       if(userNumber === NaN || userNumber <= 0 || userNumber > 99){
+           return;
+       }
+       setUserNumber(parseInt(takeNum))
+       setTakeNum('')
+   }
+
+   const handleRest = () => {
+    setTakeNum('')
+       setConfirm(false)
+   }
+  
   return (
    <Container>
        <StyleConfig />
@@ -46,18 +65,19 @@ export default Game =({navigation}) => {
                 />
                 <View style={{flexDirection:'row'}}>
                     <View style={{flex:1}}>
-                        <Button block transparent>
+                        <Button block transparent onPress={handleRest}>
                             <Text style={{color:AppTheme.primary}}>Reset</Text>
                         </Button>
                     </View>
                     <View style={{flex:1}}>
-                        <Button block transparent>
+                        <Button block transparent onPress={HandleConfirm}>
                             <Text style={{color:AppTheme.warning}}>Confirm</Text>
                         </Button>
                     </View>
                 </View>
             </View>
         </Content>
+        {confirm ? <View><Text style={{textAlign:'center', marginBottom: '4%'}}>Your number is: {userNumber}</Text></View> : <View></View>}
    </Container>
   );
 }
