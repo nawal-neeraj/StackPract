@@ -5,12 +5,12 @@ import Icon from "react-native-vector-icons/Ionicons";
 import StyleConfig from "../Config/StyleConfig";
 const winds = Dimensions.get('window')
 
-export default Home = ({ navigation }) => {
+export default Home = ({ navigation, props}) => {
 
     const [title, setTitle] = useState("");
     const [addname, setAddname] = useState("");
     const [name, setName] = useState([])
-
+    // const openDrawer = useIsDrawerOpen
 
     const handlePage = () => {
         // console.log(navigation.na,"check")
@@ -43,14 +43,14 @@ export default Home = ({ navigation }) => {
     //         </SafeAreaView>
     //     </View>
     // );
-
+    
     return (
         <Container>
             <StyleConfig />
             <Header>
                 <Left>
-                    <Button transparent>
-                        <Icon name='arrow-back-outline' size={20} />
+                    <Button transparent onPress={() => navigation.openDrawer()}>
+                        <Icon name='menu-outline' size={20} />
                     </Button>
                 </Left>
                 <Body>
