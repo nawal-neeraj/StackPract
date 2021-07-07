@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TextInput ,Dimensions} from 'react-native';
+import { StyleSheet, View, TextInput ,Dimensions, FlatList} from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text, Root, Input, List, ListItem } from 'native-base';
 import Icon from "react-native-vector-icons/Ionicons";
 import StyleConfig from "../Config/StyleConfig";
@@ -30,6 +30,12 @@ export default Home = ({ navigation }) => {
         setAddname(value)
     }
 
+    const handleTouch = (item) => {
+        console.log(item.id,"<===")
+        setName(name => {
+            return name.filter((rmv) => rmv.id !== item.id)
+        })
+    }
     // const MyStatusBar = ({ backgroundColor, ...props }) => (
     //     <View style={[styles.statusBar, { backgroundColor }]}>
     //         <SafeAreaView>
@@ -56,12 +62,12 @@ export default Home = ({ navigation }) => {
             </Header>
             <View style={styles.Cont}>
                 <View style={{padding:10}}>
-                    <Text style={{ textAlign: 'center' }}>
-                        Hello This is Ios
-                    </Text>
-                </View>
-                <View style={{padding:10}}>
+                    <List>
+                        <ListItem noBorder>
+                            <Text>Page Title: </Text>
                     <TextInput style={{backgroundColor:'#d0cccc', padding:10, width:winds.width * 0.5}} value={title} onChangeText={handleTitel} placeholder="Enter Title" />
+                        </ListItem>
+                    </List>
                 </View>
                 <View style={{padding:10}}>
                     <List>
@@ -75,36 +81,46 @@ export default Home = ({ navigation }) => {
                 {/* <View style={{padding:10}}>
                     <Input value = {state} onChangeText={(e) => setState(e)} placeholder="Enter Title" />
                 </View> */}
-                <View style={{flexDirection:'row'}}>
-                    <View style={{flex:1}}>
-                    <Button style={{ alignSelf: 'center' }} onPress={handlePage.bind(this)}>
-                        <Text>Go To</Text>
-                    </Button>
-                    </View>
-                    <View style={{flex:1}}>
-                        <Button style={{ alignSelf: 'center' }} onPress={handleList.bind(this)}>
-                        <Text>Add Name</Text>
-                        </Button>
-                    </View>
-                </View>
                 <View style={{padding:10}}>
-                    {name.map(item => (
+                    {/* {name.map(item => (
                         <View key={item.id}>
                             <List>
                                 <ListItem><Text>{item.value}</Text></ListItem>
                             </List>
                         </View>
-                    ))}
+                    ))} */}
+                    <FlatList
+                    data = {name}
+                    keyExtractor = {item => item.id}
+                    renderItem = {({item}) => (
+                        <View>
+                            <List>
+                                <ListItem onPress={handleTouch.bind(this, item)}><Text>{item.value}</Text></ListItem>
+                            </List>
+                        </View>
+                    )}
+                    />
                 </View>
             </View>
+                <View style={{flexDirection:'row', marginBottom:winds.height * 0.03, width: winds.width * 0.9, alignSelf:'center'}}>
+                    <View style={{flex:1}}>
+                    <Button block onPress={handlePage.bind(this)}>
+                        <Text>Go To</Text>
+                    </Button>
+                    </View>
+                    <View style={{flex: 0.1}} />
+                    <View style={{flex:1}}>
+                        <Button block onPress={handleList.bind(this)}>
+                        <Text>Add Name</Text>
+                        </Button>
+                    </View>
+                </View>
         </Container>
     );
 }
 
 const styles = StyleSheet.create({
     Cont: {
-        justifyContent: 'center',
-        flex: 1,
-        alignItems: 'center'
+        flex: 1
     }
 })
