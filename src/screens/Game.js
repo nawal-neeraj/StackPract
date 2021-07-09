@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, Dimensions, Alert } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Text, Root, List, ListItem } from 'native-base';
 import Icon from "react-native-vector-icons/Ionicons";
 import StyleConfig from "../Config/StyleConfig";
 import { AppTheme } from "../themes/AppThemes";
 
 import Input from "../components/Input";
-
+import Card from "../themes/Card";
+import NumberContainer from "../themes/NumberContainer";
 const window = Dimensions.get('window')
 
-export default Game =({navigation}) => {
+export default  Game = (props) => {
 
    const [takeNum, setTakeNum] = useState('')
    const [userNumber, setUserNumber] = useState('')
@@ -21,18 +22,35 @@ export default Game =({navigation}) => {
    }
 
    const HandleConfirm = () => {
-       setConfirm(true);
-       const userNumber = parseInt(takeNum);
-       if(userNumber === NaN || userNumber <= 0 || userNumber > 99){
+       const userChodenNumber = parseInt(takeNum)
+       console.log(parseInt(takeNum),"user number")
+       if(isNaN(userChodenNumber) || userChodenNumber <= 0 || userChodenNumber > 99){
+        setUserNumber('')
+        Alert.alert('Ivalid Number!', "Number should between 1 and 99.", [{text:"Okay", style:'destructive', onPress: handleRest}])
            return;
-       }
-       setUserNumber(parseInt(takeNum))
-       setTakeNum('')
+        }
+        setConfirm(true);
+        setTakeNum('')
+        setUserNumber(userChodenNumber)
    }
 
    const handleRest = () => {
     setTakeNum('')
        setConfirm(false)
+   }
+
+   let confirmdOutput;
+
+   if (confirm) {
+    confirmdOutput = (
+        <Card style={{marginTop:10}}>
+            <Text style={{textAlign:'center'}}>You Selected </Text>
+            <NumberContainer>{userNumber}</NumberContainer>
+            <View>
+            <Button bordered onPress= {() => props.onStartGame(userNumber)}><Text>Start Game</Text></Button>
+            </View>
+        </Card>
+        );
    }
   
   return (
@@ -40,7 +58,7 @@ export default Game =({navigation}) => {
        <StyleConfig />
        <Header>
            <Left>
-               <Button transparent onPress={navigation.goBack}>
+               <Button transparent>
                     <Icon name="chevron-back-outline" />
                </Button>
            </Left>
@@ -53,7 +71,7 @@ export default Game =({navigation}) => {
             <View style={{paddingTop:10, paddingBottom:10}}>
                 <Text style={{fontSize:24, textAlign:'center'}}>Start a New Game !</Text>
             </View>
-            <View style={styles.cardBox}>
+            <Card style={styles.cardBox}>
                 <View>
                     <Text>Select a Number</Text>
                 </View>
@@ -75,26 +93,17 @@ export default Game =({navigation}) => {
                         </Button>
                     </View>
                 </View>
-            </View>
+            </Card>
+        <View>
+            {confirmdOutput}
+        </View>
         </Content>
-        {confirm ? <View><Text style={{textAlign:'center', marginBottom: '4%'}}>Your number is: {userNumber}</Text></View> : <View></View>}
+        {/* {!confirm || userNumber === "" || userNumber === NaN ? <View>{console.log(userNumber,"check dekhte")}</View> :
+        <View>{console.log(userNumber,"check")}<Text style={{textAlign:'center', marginBottom: '4%'}}>Your number is: {userNumber}</Text></View> } */}
    </Container>
   );
 }
 const styles = StyleSheet.create({
-    cardBox:{
-        width:300,
-        maxWidth:'80%',
-        alignItems:'center',
-        alignSelf:'center',
-        shadowColor:'#000',
-        shadowOffset:{width:0, height: 2},
-        shadowRadius:6,
-        shadowOpacity:0.26,
-        elevation:8,
-        backgroundColor:'#fff',
-        padding:20,
-    },
 
     inputBox:{
         width:"60%",

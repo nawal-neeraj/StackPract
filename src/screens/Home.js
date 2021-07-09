@@ -14,7 +14,7 @@ export default Home = ({ navigation, props}) => {
 
     const handlePage = () => {
         // console.log(navigation.na,"check")
-        navigation.navigate('Profile', { title: title })
+        navigation.navigate('Profile')
     }
 
     const handleList = () => {

@@ -20,7 +20,7 @@ export default function Routes() {
         <DrawerItemList {...props}></DrawerItemList>
         <DrawerItem
         label="Profile"
-        onPress={() => props.navigation.navigate('Profile',{title:''})}
+        onPress={() => props.navigation.navigate('Profile')}
         ></DrawerItem>
       <DrawerItem
         label="Game"
